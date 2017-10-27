@@ -32,6 +32,25 @@ class CoreEntityLockTest extends TestCase
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
+   * Test locking versions.
+   */
+  public function testVersion()
+  {
+    $lock1 = new CoreEntityLock();
+    $lock1->acquireLock(C::LTN_ID_ENTITY_LOCK1, 1237);
+    $version1 = $lock1->getVersion();
+    $lock1->updateVersion();
+
+    self::assertInternalType(gettype($version1), 'int');
+
+    $lock2 = new CoreEntityLock();
+    $lock2->acquireLock(C::LTN_ID_ENTITY_LOCK1, 1237);
+    $version2 = $lock2->getVersion();
+    self::assertNotEquals($version1, $version2);
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
    * Test get ID of the entity.
    */
   public function testEntityId1()
