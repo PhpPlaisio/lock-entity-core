@@ -11,12 +11,6 @@
 /* CREATE TABLES                                                                  */
 /*================================================================================*/
 
-CREATE TABLE ABC_LOCK_ENTITY_NAME (
-  ltn_id SMALLINT UNSIGNED AUTO_INCREMENT NOT NULL,
-  ltn_label VARCHAR(200) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
-  CONSTRAINT PK_ABC_LOCK_ENTITY_NAME PRIMARY KEY (ltn_id)
-);
-
 CREATE TABLE ABC_LOCK_ENTITY (
   ltt_id INT UNSIGNED AUTO_INCREMENT NOT NULL,
   cmp_id SMALLINT UNSIGNED NOT NULL,
@@ -42,11 +36,20 @@ COMMENT ON COLUMN ABC_LOCK_ENTITY.ltt_version
 The version of the entity lock.
 */
 
+CREATE TABLE ABC_LOCK_ENTITY_NAME (
+  ltn_id SMALLINT UNSIGNED AUTO_INCREMENT NOT NULL,
+  ltn_name VARCHAR(200) NOT NULL,
+  ltn_label VARCHAR(200) CHARACTER SET ascii COLLATE ascii_general_ci NOT NULL,
+  CONSTRAINT PK_ABC_LOCK_ENTITY_NAME PRIMARY KEY (ltn_id)
+);
+
 /*================================================================================*/
 /* CREATE INDEXES                                                                 */
 /*================================================================================*/
 
 CREATE UNIQUE INDEX IX_ABC_LOCK_ENTITY1 ON ABC_LOCK_ENTITY (cmp_id, ltn_id, ltt_entity_id);
+
+CREATE UNIQUE INDEX IX_ABC_LOCK_ENTITY_NAME1 ON ABC_LOCK_ENTITY_NAME (ltn_name);
 
 /*================================================================================*/
 /* CREATE FOREIGN KEYS                                                            */

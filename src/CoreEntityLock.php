@@ -19,11 +19,11 @@ class CoreEntityLock implements EntityLock
   private $entityId;
 
   /**
-   * The ID of the type of the entity.
+   * The ID of the name of the entity lock.
    *
    * @var int|null
    */
-  private $typeId;
+  private $nameId;
 
   /**
    * The current version of the entity.
@@ -36,15 +36,18 @@ class CoreEntityLock implements EntityLock
   /**
    * Acquires a lock on an object.
    *
-   * @param int $typeId   The ID of the type of the entity.
+   * @param int $nameId   The ID of the name of the entity lock.
    * @param int $entityId The ID of the entity.
    *
    * @return void
+   *
+   * @since 1.0.0
+   * @api
    */
-  public function acquireLock($typeId, $entityId)
+  public function acquireLock($nameId, $entityId)
   {
-    $this->version  = Abc::$DL->abcLockEntityGetVersion(Abc::$companyResolver->getCmpId(), $typeId, $entityId);
-    $this->typeId   = $typeId;
+    $this->version  = Abc::$DL->abcLockEntityGetVersion(Abc::$companyResolver->getCmpId(), $nameId, $entityId);
+    $this->nameId   = $nameId;
     $this->entityId = $entityId;
   }
 
@@ -53,6 +56,9 @@ class CoreEntityLock implements EntityLock
    * Returns the ID of the locked entity.
    *
    * @return int
+   *
+   * @since 1.0.0
+   * @api
    */
   public function getEntityId()
   {
@@ -63,15 +69,34 @@ class CoreEntityLock implements EntityLock
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Returns the ID of the type of the locked entity.
+   * Returns the name of the entity lock.
    *
-   * @return int
+   * @return string
+   *
+   * @since 1.0.0
+   * @api
    */
-  public function getTypeId()
+  public function getName()
   {
     $this->ensureHoldLock();
 
-    return $this->typeId;
+    return Abc::$DL->abcLockEntityGetName($this->nameId);
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * Returns the ID of the name of the entity lock.
+   *
+   * @return int
+   *
+   * @since 1.0.0
+   * @api
+   */
+  public function getNameId()
+  {
+    $this->ensureHoldLock();
+
+    return $this->nameId;
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -79,6 +104,9 @@ class CoreEntityLock implements EntityLock
    * Returns the current version of the locked entity.
    *
    * @returns int
+   *
+   * @since 1.0.0
+   * @api
    */
   public function getVersion()
   {
@@ -92,12 +120,15 @@ class CoreEntityLock implements EntityLock
    * Updates the version of the locked entity.
    *
    * @return void
+   *
+   * @since 1.0.0
+   * @api
    */
   public function updateVersion()
   {
     $this->ensureHoldLock();
 
-    Abc::$DL->abcLockEntityUpdateVersion(Abc::$companyResolver->getCmpId(), $this->typeId, $this->entityId);
+    Abc::$DL->abcLockEntityUpdateVersion(Abc::$companyResolver->getCmpId(), $this->nameId, $this->entityId);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
