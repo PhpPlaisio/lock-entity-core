@@ -8,7 +8,7 @@ use SetBased\Exception\LogicException;
 /**
  * Class for optimistically locking database entities.
  */
-class CoreEntityLock
+class CoreEntityLock implements EntityLock
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
