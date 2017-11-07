@@ -17,7 +17,7 @@
     "phing/phing": "^2.0",
     "phpunit/phpunit": "^6.0.0",
     "setbased/php-stratum": "^0.9.0",
-    "setbased/abc-company-resolver-uni": "^0.9.0"
+    "setbased/abc-company-resolver-uni": "^1.0.0"
   },
   "autoload": {
     "psr-4": {
