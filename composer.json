@@ -10,8 +10,8 @@
   "license": "MIT",
   "require": {
     "php": ">=7.0.0",
-    "setbased/abc": "^0.10.3",
-    "setbased/abc-lock-entity": "^0.9.1"
+    "setbased/abc": "^0.10.18",
+    "setbased/abc-lock-entity": "^1.0.0"
   },
   "require-dev": {
     "phing/phing": "^2.0",
@@ -33,6 +33,6 @@
     ]
   },
   "config": {
-    "bin-dir": "bin"
+    "bin-dir": "bin/"
   }
 }
