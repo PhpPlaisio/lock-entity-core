@@ -3,7 +3,6 @@
 namespace SetBased\Abc\Lock;
 
 use SetBased\Abc\Abc;
-use SetBased\Exception\LogicException;
 
 /**
  * Class for optimistically locking database entities.
@@ -46,7 +45,7 @@ class CoreEntityLock implements EntityLock
    */
   public function acquireLock($nameId, $entityId)
   {
-    $this->version  = Abc::$DL->abcLockEntityGetVersion(Abc::$companyResolver->getCmpId(), $nameId, $entityId);
+    $this->version  = Abc::$DL->abcLockEntityCoreGetVersion(Abc::$companyResolver->getCmpId(), $nameId, $entityId);
     $this->nameId   = $nameId;
     $this->entityId = $entityId;
   }
@@ -80,7 +79,7 @@ class CoreEntityLock implements EntityLock
   {
     $this->ensureHoldLock();
 
-    return Abc::$DL->abcLockEntityGetName($this->nameId);
+    return Abc::$DL->abcLockEntityCoreGetName($this->nameId);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -128,7 +127,7 @@ class CoreEntityLock implements EntityLock
   {
     $this->ensureHoldLock();
 
-    Abc::$DL->abcLockEntityUpdateVersion(Abc::$companyResolver->getCmpId(), $this->nameId, $this->entityId);
+    Abc::$DL->abcLockEntityCoreUpdateVersion(Abc::$companyResolver->getCmpId(), $this->nameId, $this->entityId);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -139,7 +138,7 @@ class CoreEntityLock implements EntityLock
   {
     if ($this->version===null)
     {
-      throw new LogicException('No entity is locked');
+      throw new \LogicException('No entity is locked');
     }
   }
 

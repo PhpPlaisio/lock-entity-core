@@ -5,9 +5,9 @@
  * @param p_ltn_id        The ID of the entity lock name.
  * @param p_ltt_entity_id The ID of the entity.
  */
-create procedure abc_lock_entity_get_version(in p_cmp_id        @abc_lock_entity.cmp_id%type@,
-                                             in p_ltn_id        @abc_lock_entity.ltn_id%type@,
-                                             in p_ltt_entity_id @abc_lock_entity.ltt_entity_id%type@)
+create procedure abc_lock_entity_core_get_version(in p_cmp_id        @abc_lock_entity.cmp_id%type@,
+                                                  in p_ltn_id        @abc_lock_entity.ltn_id%type@,
+                                                  in p_ltt_entity_id @abc_lock_entity.ltt_entity_id%type@)
 modifies sql data
 -- type: singleton1
 begin
