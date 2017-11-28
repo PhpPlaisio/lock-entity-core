@@ -1,0 +1,20 @@
+/**
+ * Updates the version of an entity lock.
+ *
+ * @param p_cmp_id        The ID of the company (safeguard).
+ * @param p_ltn_id        The ID of the entity lock name.
+ * @param p_ltt_entity_id The ID of the entity.
+ */
+create procedure abc_lock_entity_core_update_version(in p_cmp_id        @abc_lock_entity.cmp_id%type@,
+                                                     in p_ltn_id        @abc_lock_entity.ltn_id%type@,
+                                                     in p_ltt_entity_id @abc_lock_entity.ltt_entity_id%type@)
+modifies sql data
+-- type: none
+begin
+  update ABC_LOCK_ENTITY
+  set   ltt_version = uuid_short()
+  where cmp_id        = p_cmp_id
+  and   ltn_id        = p_ltn_id
+  and   ltt_entity_id = p_ltt_entity_id
+  ;
+end

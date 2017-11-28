@@ -1,0 +1,38 @@
+{
+  "name": "setbased/abc-lock-entity-core",
+  "description": "ABC-Framework: Core Entity Lock",
+  "keywords": [
+    "ABC-Framework",
+    "Core",
+    "Lock"
+  ],
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "php": ">=7.0.0",
+    "setbased/abc": "^0.10.18",
+    "setbased/abc-lock-entity": "^1.0.0"
+  },
+  "require-dev": {
+    "phing/phing": "^2.0.0",
+    "phpunit/phpunit": "^6.0.0",
+    "setbased/php-stratum": "^0.9.0",
+    "setbased/abc-company-resolver-uni": "^1.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "SetBased\\Abc\\Lock\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "SetBased\\Abc\\Test\\": "test/"
+    },
+    "classmap": [
+      "test/C.php"
+    ]
+  },
+  "config": {
+    "bin-dir": "bin/"
+  }
+}

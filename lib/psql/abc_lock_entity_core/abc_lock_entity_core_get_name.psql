@@ -1,0 +1,14 @@
+/**
+ * Selects the name of a entity lock.
+ *
+ * @param p_ltn_id The ID of the entity lock.
+ */
+create procedure abc_lock_entity_core_get_name(in p_ltn_id @abc_lock_entity.ltn_id%type@)
+modifies sql data
+-- type: singleton1
+begin
+  select ltn_name
+  from   ABC_LOCK_ENTITY_NAME
+  where  ltn_id = p_ltn_id
+  ;
+end
