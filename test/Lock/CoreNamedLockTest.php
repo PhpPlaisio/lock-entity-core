@@ -232,7 +232,7 @@ class CoreEntityLockTest extends TestCase
     $version1 = $lock1->getVersion();
     $lock1->updateVersion();
 
-    self::assertInternalType(gettype($version1), 'int');
+    self::assertInternalType('int', $version1);
 
     $lock2 = new CoreEntityLock();
     $lock2->acquireLock(C::LTN_ID_ENTITY_LOCK1, 1237);

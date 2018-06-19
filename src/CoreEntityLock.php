@@ -1,5 +1,5 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+
 namespace SetBased\Abc\Lock;
 
 use SetBased\Abc\Abc;
@@ -43,7 +43,7 @@ class CoreEntityLock implements EntityLock
    * @since 1.0.0
    * @api
    */
-  public function acquireLock($nameId, $entityId)
+  public function acquireLock(int $nameId, int $entityId): void
   {
     $this->version  = Abc::$DL->abcLockEntityCoreGetVersion(Abc::$companyResolver->getCmpId(), $nameId, $entityId);
     $this->nameId   = $nameId;
@@ -59,7 +59,7 @@ class CoreEntityLock implements EntityLock
    * @since 1.0.0
    * @api
    */
-  public function getEntityId()
+  public function getEntityId(): int
   {
     $this->ensureHoldLock();
 
@@ -75,7 +75,7 @@ class CoreEntityLock implements EntityLock
    * @since 1.0.0
    * @api
    */
-  public function getName()
+  public function getName(): string
   {
     $this->ensureHoldLock();
 
@@ -91,7 +91,7 @@ class CoreEntityLock implements EntityLock
    * @since 1.0.0
    * @api
    */
-  public function getNameId()
+  public function getNameId(): int
   {
     $this->ensureHoldLock();
 
@@ -107,7 +107,7 @@ class CoreEntityLock implements EntityLock
    * @since 1.0.0
    * @api
    */
-  public function getVersion()
+  public function getVersion(): int
   {
     $this->ensureHoldLock();
 
@@ -123,7 +123,7 @@ class CoreEntityLock implements EntityLock
    * @since 1.0.0
    * @api
    */
-  public function updateVersion()
+  public function updateVersion(): void
   {
     $this->ensureHoldLock();
 
@@ -134,7 +134,7 @@ class CoreEntityLock implements EntityLock
   /**
    * Throws an exception if this object was never used to hold a lock.
    */
-  private function ensureHoldLock()
+  private function ensureHoldLock(): void
   {
     if ($this->version===null)
     {
