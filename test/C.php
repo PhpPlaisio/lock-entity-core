@@ -14,12 +14,10 @@ class C
    *
    * Below this doc block constants will be inserted by PhpStratum.
    */
-  const CMP_ID_ABC             = 2;
-  const CMP_ID_SYS             = 1;
-  const LNM_ID_ABC_NAMED_LOCK1 = 3;
-  const LNM_ID_ABC_NAMED_LOCK2 = 4;
-  const LNM_ID_SYS_NAMED_LOCK1 = 1;
-  const LNM_ID_SYS_NAMED_LOCK2 = 2;
+  const CMP_ID_ABC          = 2;
+  const CMP_ID_SYS          = 1;
+  const LTN_ID_ENTITY_LOCK1 = 1;
+  const LTN_ID_ENTITY_LOCK2 = 2;
 
   //--------------------------------------------------------------------------------------------------------------------
 }
