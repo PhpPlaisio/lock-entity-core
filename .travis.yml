@@ -20,6 +20,3 @@ install:
     
 script: 
   - ./bin/phing unit
-
-after_script:
-  - mv test/C.php test/C.txt
