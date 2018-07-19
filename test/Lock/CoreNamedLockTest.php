@@ -1,5 +1,6 @@
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+declare(strict_types=1);
+
 namespace SetBased\Abc\Test\Lock;
 
 use PHPUnit\Framework\TestCase;
@@ -13,7 +14,7 @@ use SetBased\Exception\LogicException;
 /**
  * Test cases for Lock.
  */
-class CoreEntityLockTest extends TestCase
+class CoreNamedLockTest extends TestCase
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**

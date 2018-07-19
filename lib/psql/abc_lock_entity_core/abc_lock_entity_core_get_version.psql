@@ -9,7 +9,8 @@ create procedure abc_lock_entity_core_get_version(in p_cmp_id        @abc_lock_e
                                                   in p_ltn_id        @abc_lock_entity.ltn_id%type@,
                                                   in p_ltt_entity_id @abc_lock_entity.ltt_entity_id%type@)
 modifies sql data
--- type: singleton1
+-- type:   singleton1
+-- return: int
 begin
   declare l_ltt_version @abc_lock_entity.ltt_version%type@;
   

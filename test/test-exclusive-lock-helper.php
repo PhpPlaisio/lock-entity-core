@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
-//----------------------------------------------------------------------------------------------------------------------
+declare(strict_types=1);
+
 use SetBased\Abc\Abc;
 use SetBased\Abc\C;
 use SetBased\Abc\CompanyResolver\UniCompanyResolver;
@@ -9,7 +10,6 @@ use SetBased\Abc\Test\TestDataLayer;
 
 require __DIR__.'/../vendor/autoload.php';
 
-//----------------------------------------------------------------------------------------------------------------------
 // Setup ABC.
 Abc::$DL              = new TestDataLayer();
 Abc::$companyResolver = new UniCompanyResolver(C::CMP_ID_ABC);
