@@ -15,7 +15,7 @@
         <exec command="cat test/ddl/0100_create_tables.sql        | mysql -v -u root test" passthru="true" checkreturn="true"/>
         <exec command="cat lib/ddl/0100_create_tables.sql         | mysql -v -u root test" passthru="true" checkreturn="true"/>
         <exec command="cat test/ddl/0300_abc_lock_entity_name.sql | mysql -v -u root test" passthru="true" checkreturn="true"/>
-        <exec command="bin/stratum stratum test/etc/stratum.cfg"                           passthru="true" checkreturn="true"/>
+        <exec command="bin/stratum stratum test/etc/stratum.ini"                           passthru="true" checkreturn="true"/>
     </target>
 
     <!-- Runs all unit tests -->

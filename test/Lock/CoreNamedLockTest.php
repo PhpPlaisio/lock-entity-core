@@ -9,7 +9,6 @@ use SetBased\Abc\C;
 use SetBased\Abc\CompanyResolver\UniCompanyResolver;
 use SetBased\Abc\Lock\CoreEntityLock;
 use SetBased\Abc\Test\TestDataLayer;
-use SetBased\Exception\LogicException;
 
 /**
  * Test cases for Lock.
@@ -20,7 +19,7 @@ class CoreNamedLockTest extends TestCase
   /**
    * Test locking twice (or more) the same entity is possible.
    */
-  public function testDoubleLock()
+  public function testDoubleLock(): void
   {
     $lock = new CoreEntityLock();
 
@@ -35,7 +34,7 @@ class CoreNamedLockTest extends TestCase
   /**
    * Test get ID of the entity.
    */
-  public function testEntityId1()
+  public function testEntityId1(): void
   {
     $lock = new CoreEntityLock();
 
@@ -48,13 +47,12 @@ class CoreNamedLockTest extends TestCase
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Test get ID of entity lock without lock.
-   *
-   * @expectedException LogicException
    */
-  public function testEntityId2()
+  public function testEntityId2(): void
   {
     $lock = new CoreEntityLock();
 
+    $this->expectException(\LogicException::class);
     $lock->getEntityId();
   }
 
@@ -62,7 +60,7 @@ class CoreNamedLockTest extends TestCase
   /**
    * Test lock is exclusive and released on commit.
    */
-  public function testExclusiveLock1()
+  public function testExclusiveLock1(): void
   {
     // Start helper process
     $descriptors = [0 => ["pipe", "r"],
@@ -93,7 +91,7 @@ class CoreNamedLockTest extends TestCase
   /**
    * Test lock is exclusive and released on rollback.
    */
-  public function testExclusiveLock2()
+  public function testExclusiveLock2(): void
   {
     // Start helper process
     $descriptors = [0 => ["pipe", "r"],
@@ -124,7 +122,7 @@ class CoreNamedLockTest extends TestCase
   /**
    * Test locks are company isolated.
    */
-  public function testExclusiveLock3()
+  public function testExclusiveLock3(): void
   {
     Abc::$companyResolver = new UniCompanyResolver(C::CMP_ID_SYS);
 
@@ -157,7 +155,7 @@ class CoreNamedLockTest extends TestCase
   /**
    * Test get ID of the type of the locked entity.
    */
-  public function testGetId1()
+  public function testGetId1(): void
   {
     $lock = new CoreEntityLock();
 
@@ -170,13 +168,12 @@ class CoreNamedLockTest extends TestCase
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Test get ID of the type of the locked entity. without lock.
-   *
-   * @expectedException LogicException
    */
-  public function testGetId2()
+  public function testGetId2(): void
   {
     $lock = new CoreEntityLock();
 
+    $this->expectException(\LogicException::class);
     $lock->getNameId();
   }
 
@@ -184,7 +181,7 @@ class CoreNamedLockTest extends TestCase
   /**
    * Test get name of entity lock.
    */
-  public function testGetName1()
+  public function testGetName1(): void
   {
     $lock = new CoreEntityLock();
 
@@ -197,13 +194,12 @@ class CoreNamedLockTest extends TestCase
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Test get name of entity lock without lock.
-   *
-   * @expectedException LogicException
    */
-  public function testGetName2()
+  public function testGetName2(): void
   {
     $lock = new CoreEntityLock();
 
+    $this->expectException(\LogicException::class);
     $lock->getName();
   }
 
@@ -211,7 +207,7 @@ class CoreNamedLockTest extends TestCase
   /**
    * Test multiple entity locks on the entity are possible.
    */
-  public function testMultipleLocks()
+  public function testMultipleLocks(): void
   {
     $lock1 = new CoreEntityLock();
     $lock1->acquireLock(C::LTN_ID_ENTITY_LOCK1, 1236);
@@ -226,14 +222,14 @@ class CoreNamedLockTest extends TestCase
   /**
    * Test locking versions.
    */
-  public function testVersion()
+  public function testVersion(): void
   {
     $lock1 = new CoreEntityLock();
     $lock1->acquireLock(C::LTN_ID_ENTITY_LOCK1, 1237);
     $version1 = $lock1->getVersion();
     $lock1->updateVersion();
 
-    self::assertInternalType('int', $version1);
+    self::assertIsInt($version1);
 
     $lock2 = new CoreEntityLock();
     $lock2->acquireLock(C::LTN_ID_ENTITY_LOCK1, 1237);
@@ -245,7 +241,7 @@ class CoreNamedLockTest extends TestCase
   /**
    * Connects to the MySQL server and cleans the BLOB tables.
    */
-  protected function setUp()
+  protected function setUp(): void
   {
     Abc::$DL              = new TestDataLayer();
     Abc::$companyResolver = new UniCompanyResolver(C::CMP_ID_ABC);
@@ -258,7 +254,7 @@ class CoreNamedLockTest extends TestCase
   /**
    * Disconnects from the MySQL server.
    */
-  protected function tearDown()
+  protected function tearDown(): void
   {
     Abc::$DL->commit();
     Abc::$DL->disconnect();
