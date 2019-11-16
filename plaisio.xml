@@ -1,4 +1,4 @@
-<abc>
+<plaisio>
     <database>
         <provides>
             <table>ABC_LOCK_ENTITY</table>
@@ -16,4 +16,4 @@
             <include>lib/psql/**/*.psql</include>
         </includes>
     </stratum>
-</abc>
+</plaisio>

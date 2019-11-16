@@ -2,19 +2,19 @@
 <?php
 declare(strict_types=1);
 
-use SetBased\Abc\Abc;
-use SetBased\Abc\C;
-use SetBased\Abc\CompanyResolver\UniCompanyResolver;
-use SetBased\Abc\Lock\CoreEntityLock;
-use SetBased\Abc\Test\TestDataLayer;
+use Plaisio\C;
+use Plaisio\CompanyResolver\UniCompanyResolver;
+use Plaisio\Kernel\Nub;
+use Plaisio\Lock\CoreEntityLock;
+use Plaisio\Lock\Test\TestDataLayer;
 
 require __DIR__.'/../vendor/autoload.php';
 
 // Setup ABC.
-Abc::$DL              = new TestDataLayer();
-Abc::$companyResolver = new UniCompanyResolver(C::CMP_ID_ABC);
-Abc::$DL->connect('localhost', 'test', 'test', 'test');
-Abc::$DL->begin();
+Nub::$DL              = new TestDataLayer();
+Nub::$companyResolver = new UniCompanyResolver(C::CMP_ID_ABC);
+Nub::$DL->connect('localhost', 'test', 'test', 'test');
+Nub::$DL->begin();
 
 // Start time.
 $time0 = time();

@@ -1,14 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace SetBased\Abc\Test\Lock;
+namespace Plaisio\Lock\Test;
 
 use PHPUnit\Framework\TestCase;
-use SetBased\Abc\Abc;
-use SetBased\Abc\C;
-use SetBased\Abc\CompanyResolver\UniCompanyResolver;
-use SetBased\Abc\Lock\CoreEntityLock;
-use SetBased\Abc\Test\TestDataLayer;
+use Plaisio\C;
+use Plaisio\CompanyResolver\UniCompanyResolver;
+use Plaisio\Kernel\Nub;
+use Plaisio\Lock\CoreEntityLock;
 
 /**
  * Test cases for Lock.
@@ -66,7 +65,7 @@ class CoreNamedLockTest extends TestCase
     $descriptors = [0 => ["pipe", "r"],
                     1 => ["pipe", "w"]];
 
-    $process = proc_open(__DIR__.'/../test-exclusive-lock-helper.php', $descriptors, $pipes);
+    $process = proc_open(__DIR__.'/test-exclusive-lock-helper.php', $descriptors, $pipes);
 
     // Acquire lock.
     $lock = new CoreEntityLock();
@@ -79,7 +78,7 @@ class CoreNamedLockTest extends TestCase
     sleep(4);
 
     // Release lock.
-    Abc::$DL->commit();
+    Nub::$DL->commit();
 
     // Read lock waiting time from child process.
     $time = fgets($pipes[1]);
@@ -97,7 +96,7 @@ class CoreNamedLockTest extends TestCase
     $descriptors = [0 => ["pipe", "r"],
                     1 => ["pipe", "w"]];
 
-    $process = proc_open(__DIR__.'/../test-exclusive-lock-helper.php', $descriptors, $pipes);
+    $process = proc_open(__DIR__.'/test-exclusive-lock-helper.php', $descriptors, $pipes);
 
     // Acquire lock.
     $lock = new CoreEntityLock();
@@ -110,7 +109,7 @@ class CoreNamedLockTest extends TestCase
     sleep(4);
 
     // Release lock.
-    Abc::$DL->rollback();
+    Nub::$DL->rollback();
 
     // Read lock waiting time from child process.
     $time = fgets($pipes[1]);
@@ -124,13 +123,13 @@ class CoreNamedLockTest extends TestCase
    */
   public function testExclusiveLock3(): void
   {
-    Abc::$companyResolver = new UniCompanyResolver(C::CMP_ID_SYS);
+    Nub::$companyResolver = new UniCompanyResolver(C::CMP_ID_SYS);
 
     // Start helper process
     $descriptors = [0 => ["pipe", "r"],
                     1 => ["pipe", "w"]];
 
-    $process = proc_open(__DIR__.'/../test-exclusive-lock-helper.php', $descriptors, $pipes);
+    $process = proc_open(__DIR__.'/test-exclusive-lock-helper.php', $descriptors, $pipes);
 
     // Acquire lock.
     $lock = new CoreEntityLock();
@@ -143,7 +142,7 @@ class CoreNamedLockTest extends TestCase
     sleep(4);
 
     // Release lock.
-    Abc::$DL->commit();
+    Nub::$DL->commit();
 
     // Read lock waiting time from child process.
     $time = fgets($pipes[1]);
@@ -243,11 +242,11 @@ class CoreNamedLockTest extends TestCase
    */
   protected function setUp(): void
   {
-    Abc::$DL              = new TestDataLayer();
-    Abc::$companyResolver = new UniCompanyResolver(C::CMP_ID_ABC);
+    Nub::$DL              = new TestDataLayer();
+    Nub::$companyResolver = new UniCompanyResolver(C::CMP_ID_ABC);
 
-    Abc::$DL->connect('localhost', 'test', 'test', 'test');
-    Abc::$DL->begin();
+    Nub::$DL->connect('localhost', 'test', 'test', 'test');
+    Nub::$DL->begin();
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -256,8 +255,8 @@ class CoreNamedLockTest extends TestCase
    */
   protected function tearDown(): void
   {
-    Abc::$DL->commit();
-    Abc::$DL->disconnect();
+    Nub::$DL->commit();
+    Nub::$DL->disconnect();
   }
 
   //--------------------------------------------------------------------------------------------------------------------

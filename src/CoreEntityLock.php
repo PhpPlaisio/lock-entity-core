@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace SetBased\Abc\Lock;
+namespace Plaisio\Lock;
 
-use SetBased\Abc\Abc;
+use Plaisio\Kernel\Nub;
 
 /**
  * Class for optimistically locking database entities.
@@ -46,7 +46,7 @@ class CoreEntityLock implements EntityLock
    */
   public function acquireLock(int $nameId, int $entityId): void
   {
-    $this->version  = Abc::$DL->abcLockEntityCoreGetVersion(Abc::$companyResolver->getCmpId(), $nameId, $entityId);
+    $this->version  = Nub::$DL->abcLockEntityCoreGetVersion(Nub::$companyResolver->getCmpId(), $nameId, $entityId);
     $this->nameId   = $nameId;
     $this->entityId = $entityId;
   }
@@ -80,7 +80,7 @@ class CoreEntityLock implements EntityLock
   {
     $this->ensureHoldLock();
 
-    return Abc::$DL->abcLockEntityCoreGetName($this->nameId);
+    return Nub::$DL->abcLockEntityCoreGetName($this->nameId);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -128,7 +128,7 @@ class CoreEntityLock implements EntityLock
   {
     $this->ensureHoldLock();
 
-    Abc::$DL->abcLockEntityCoreUpdateVersion(Abc::$companyResolver->getCmpId(), $this->nameId, $this->entityId);
+    Nub::$DL->abcLockEntityCoreUpdateVersion(Nub::$companyResolver->getCmpId(), $this->nameId, $this->entityId);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
