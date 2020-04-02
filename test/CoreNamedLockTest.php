@@ -65,7 +65,9 @@ class CoreNamedLockTest extends TestCase
     $descriptors = [0 => ["pipe", "r"],
                     1 => ["pipe", "w"]];
 
-    $process = proc_open(__DIR__.'/test-exclusive-lock-helper.php', $descriptors, $pipes);
+    // As of PHP 7.4.0 we can pass an array of command line parameters.
+    $cmd = sprintf('%s %s', escapeshellarg(PHP_BINARY), escapeshellarg(__DIR__.'/test-exclusive-lock-helper.php'));
+    $process = proc_open($cmd, $descriptors, $pipes);
 
     // Acquire lock.
     $lock = new CoreEntityLock();
@@ -96,7 +98,9 @@ class CoreNamedLockTest extends TestCase
     $descriptors = [0 => ["pipe", "r"],
                     1 => ["pipe", "w"]];
 
-    $process = proc_open(__DIR__.'/test-exclusive-lock-helper.php', $descriptors, $pipes);
+    // As of PHP 7.4.0 we can pass an array of command line parameters.
+    $cmd = sprintf('%s %s', escapeshellarg(PHP_BINARY), escapeshellarg(__DIR__.'/test-exclusive-lock-helper.php'));
+    $process = proc_open($cmd, $descriptors, $pipes);
 
     // Acquire lock.
     $lock = new CoreEntityLock();
@@ -129,7 +133,9 @@ class CoreNamedLockTest extends TestCase
     $descriptors = [0 => ["pipe", "r"],
                     1 => ["pipe", "w"]];
 
-    $process = proc_open(__DIR__.'/test-exclusive-lock-helper.php', $descriptors, $pipes);
+    // As of PHP 7.4.0 we can pass an array of command line parameters.
+    $cmd = sprintf('%s %s', escapeshellarg(PHP_BINARY), escapeshellarg(__DIR__.'/test-exclusive-lock-helper.php'));
+    $process = proc_open($cmd, $descriptors, $pipes);
 
     // Acquire lock.
     $lock = new CoreEntityLock();
