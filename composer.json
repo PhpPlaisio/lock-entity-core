@@ -9,13 +9,13 @@
   "license": "MIT",
   "require": {
     "php": ">=7.3",
-    "plaisio/kernel": "^1.0",
-    "plaisio/lock-entity": "^1.0"
+    "plaisio/kernel": "^1.1",
+    "plaisio/lock-entity": "^1.1"
   },
   "require-dev": {
     "phing/phing": "^2.0",
     "phpunit/phpunit": "^9.0",
-    "plaisio/company-resolver-uni": "^1.0",
+    "plaisio/company-resolver-uni": "^1.1",
     "setbased/php-stratum": "^5.4",
     "setbased/php-stratum-mysql": "^4.4"
   },
