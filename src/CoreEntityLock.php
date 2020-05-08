@@ -46,7 +46,9 @@ class CoreEntityLock implements EntityLock
    */
   public function acquireLock(int $nameId, int $entityId): void
   {
-    $this->version  = Nub::$DL->abcLockEntityCoreGetVersion(Nub::$companyResolver->getCmpId(), $nameId, $entityId);
+    $this->version  = Nub::$nub->DL->abcLockEntityCoreGetVersion(Nub::$nub->companyResolver->getCmpId(),
+                                                                 $nameId,
+                                                                 $entityId);
     $this->nameId   = $nameId;
     $this->entityId = $entityId;
   }
@@ -80,7 +82,7 @@ class CoreEntityLock implements EntityLock
   {
     $this->ensureHoldLock();
 
-    return Nub::$DL->abcLockEntityCoreGetName($this->nameId);
+    return Nub::$nub->DL->abcLockEntityCoreGetName($this->nameId);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -128,7 +130,9 @@ class CoreEntityLock implements EntityLock
   {
     $this->ensureHoldLock();
 
-    Nub::$DL->abcLockEntityCoreUpdateVersion(Nub::$companyResolver->getCmpId(), $this->nameId, $this->entityId);
+    Nub::$nub->DL->abcLockEntityCoreUpdateVersion(Nub::$nub->companyResolver->getCmpId(),
+                                                  $this->nameId,
+                                                  $this->entityId);
   }
 
   //--------------------------------------------------------------------------------------------------------------------

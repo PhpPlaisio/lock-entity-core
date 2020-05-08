@@ -2,25 +2,20 @@
 declare(strict_types=1);
 
 use Plaisio\C;
-use Plaisio\CompanyResolver\UniCompanyResolver;
-use Plaisio\Kernel\Nub;
 use Plaisio\Lock\CoreEntityLock;
-use Plaisio\Lock\Test\TestDataLayer;
+use Plaisio\Lock\Test\TestKernelPlaisio;
 
 require __DIR__.'/../vendor/autoload.php';
 
-// Setup ABC.
-Nub::$DL              = new TestDataLayer();
-Nub::$companyResolver = new UniCompanyResolver(C::CMP_ID_ABC);
-Nub::$DL->connect('localhost', 'test', 'test', 'test');
-Nub::$DL->begin();
+// Setup kernel.
+$kernel = new TestKernelPlaisio();
 
 // Start time.
 $time0 = time();
 
 // Wait for parent process.
 $handle = fopen('php://stdin', 'rt');
-$read = fgets($handle);
+$read   = fgets($handle);
 
 // Acquire lock.
 $lock = new CoreEntityLock();

@@ -5,7 +5,6 @@ namespace Plaisio\Lock\Test;
 
 use PHPUnit\Framework\TestCase;
 use Plaisio\C;
-use Plaisio\CompanyResolver\UniCompanyResolver;
 use Plaisio\Kernel\Nub;
 use Plaisio\Lock\CoreEntityLock;
 
@@ -14,6 +13,14 @@ use Plaisio\Lock\CoreEntityLock;
  */
 class CoreNamedLockTest extends TestCase
 {
+  //--------------------------------------------------------------------------------------------------------------------
+  /**
+   * The kernel.
+   *
+   * @var Nub
+   */
+  protected $kernel;
+
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Test locking twice (or more) the same entity is possible.
@@ -66,7 +73,7 @@ class CoreNamedLockTest extends TestCase
                     1 => ["pipe", "w"]];
 
     // As of PHP 7.4.0 we can pass an array of command line parameters.
-    $cmd = sprintf('%s %s', escapeshellarg(PHP_BINARY), escapeshellarg(__DIR__.'/test-exclusive-lock-helper.php'));
+    $cmd     = sprintf('%s %s', escapeshellarg(PHP_BINARY), escapeshellarg(__DIR__.'/test-exclusive-lock-helper.php'));
     $process = proc_open($cmd, $descriptors, $pipes);
 
     // Acquire lock.
@@ -80,7 +87,7 @@ class CoreNamedLockTest extends TestCase
     sleep(4);
 
     // Release lock.
-    Nub::$DL->commit();
+    Nub::$nub->DL->commit();
 
     // Read lock waiting time from child process.
     $time = fgets($pipes[1]);
@@ -99,7 +106,7 @@ class CoreNamedLockTest extends TestCase
                     1 => ["pipe", "w"]];
 
     // As of PHP 7.4.0 we can pass an array of command line parameters.
-    $cmd = sprintf('%s %s', escapeshellarg(PHP_BINARY), escapeshellarg(__DIR__.'/test-exclusive-lock-helper.php'));
+    $cmd     = sprintf('%s %s', escapeshellarg(PHP_BINARY), escapeshellarg(__DIR__.'/test-exclusive-lock-helper.php'));
     $process = proc_open($cmd, $descriptors, $pipes);
 
     // Acquire lock.
@@ -113,7 +120,7 @@ class CoreNamedLockTest extends TestCase
     sleep(4);
 
     // Release lock.
-    Nub::$DL->rollback();
+    Nub::$nub->DL->rollback();
 
     // Read lock waiting time from child process.
     $time = fgets($pipes[1]);
@@ -127,14 +134,14 @@ class CoreNamedLockTest extends TestCase
    */
   public function testExclusiveLock3(): void
   {
-    Nub::$companyResolver = new UniCompanyResolver(C::CMP_ID_SYS);
+    $this->kernel = new TestKernelSys();
 
     // Start helper process
     $descriptors = [0 => ["pipe", "r"],
                     1 => ["pipe", "w"]];
 
     // As of PHP 7.4.0 we can pass an array of command line parameters.
-    $cmd = sprintf('%s %s', escapeshellarg(PHP_BINARY), escapeshellarg(__DIR__.'/test-exclusive-lock-helper.php'));
+    $cmd     = sprintf('%s %s', escapeshellarg(PHP_BINARY), escapeshellarg(__DIR__.'/test-exclusive-lock-helper.php'));
     $process = proc_open($cmd, $descriptors, $pipes);
 
     // Acquire lock.
@@ -148,7 +155,7 @@ class CoreNamedLockTest extends TestCase
     sleep(4);
 
     // Release lock.
-    Nub::$DL->commit();
+    Nub::$nub->DL->commit();
 
     // Read lock waiting time from child process.
     $time = fgets($pipes[1]);
@@ -248,11 +255,7 @@ class CoreNamedLockTest extends TestCase
    */
   protected function setUp(): void
   {
-    Nub::$DL              = new TestDataLayer();
-    Nub::$companyResolver = new UniCompanyResolver(C::CMP_ID_ABC);
-
-    Nub::$DL->connect('localhost', 'test', 'test', 'test');
-    Nub::$DL->begin();
+    $this->kernel = new TestKernelPlaisio();
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -261,8 +264,8 @@ class CoreNamedLockTest extends TestCase
    */
   protected function tearDown(): void
   {
-    Nub::$DL->commit();
-    Nub::$DL->disconnect();
+    Nub::$nub->DL->commit();
+    Nub::$nub->DL->disconnect();
   }
 
   //--------------------------------------------------------------------------------------------------------------------

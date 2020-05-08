@@ -12,8 +12,8 @@ values( 1
 ,       'SYS'
 ,       'CMP_ID_SYS')
 ,      ( 2
-,       'ABC'
-,       'CMP_ID_ABC')
+,       'PLAISIO'
+,       'CMP_ID_PLAISIO')
 ;
 
 commit;
