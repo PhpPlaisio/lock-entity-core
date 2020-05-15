@@ -4,9 +4,15 @@
         <exec command="composer update" checkreturn="true" passthru="true"/>
     </target>
 
-    <!-- Runs ApiGen -->
-    <target name="apigen">
-        <exec command="apigen generate --todo --tree --source src --destination doc" passthru="true" checkreturn="true"/>
+    <target name="kernel">
+        <exec executable="bin/plaisio" checkreturn="true" passthru="true">
+            <arg value="--ansi"/>
+            <arg value="plaisio:kernel-data-layer-type"/>
+        </exec>
+        <exec executable="bin/plaisio" checkreturn="true" passthru="true">
+            <arg value="--ansi"/>
+            <arg value="plaisio:kernel-properties"/>
+        </exec>
     </target>
 
     <target name="unit-before">

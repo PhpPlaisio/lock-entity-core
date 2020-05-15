@@ -1,26 +1,25 @@
 <?php
 declare(strict_types=1);
 
-namespace Plaisio\Lock\Test;
+namespace Plaisio\Lock;
 
-use Plaisio\C;
-use Plaisio\CompanyResolver\CompanyResolver;
-use Plaisio\CompanyResolver\UniCompanyResolver;
+use Plaisio\PlaisioObject;
 
 /**
- * Kernel for testing purposes.
+ * Factory for creating locks on database entities.
  */
-class TestKernelPlaisio extends TestKernelSys
+class CoreEntityLockFactory extends PlaisioObject implements EntityLockFactory
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Returns the helper object for deriving the company.
-   *
-   * @return CompanyResolver
+   * @inheritDoc
    */
-  public function getCompany(): CompanyResolver
+  public function create(int $nameId, int $entityId): EntityLock
   {
-    return new UniCompanyResolver(C::CMP_ID_PLAISIO);
+    $lock = new CoreEntityLock($this);
+    $lock->acquireLock($nameId, $entityId);
+
+    return $lock;
   }
 
   //--------------------------------------------------------------------------------------------------------------------

@@ -5,8 +5,8 @@ namespace Plaisio\Lock\Test;
 
 use PHPUnit\Framework\TestCase;
 use Plaisio\C;
-use Plaisio\Kernel\Nub;
 use Plaisio\Lock\CoreEntityLock;
+use Plaisio\PlaisioKernel;
 
 /**
  * Test cases for Lock.
@@ -17,17 +17,18 @@ class CoreNamedLockTest extends TestCase
   /**
    * The kernel.
    *
-   * @var Nub
+   * @var PlaisioKernel
    */
   protected $kernel;
 
   //--------------------------------------------------------------------------------------------------------------------
+
   /**
    * Test locking twice (or more) the same entity is possible.
    */
   public function testDoubleLock(): void
   {
-    $lock = new CoreEntityLock();
+    $lock = new CoreEntityLock($this->kernel);
 
     $lock->acquireLock(C::LTN_ID_ENTITY_LOCK1, 123);
     $lock->acquireLock(C::LTN_ID_ENTITY_LOCK1, 123);
@@ -42,7 +43,7 @@ class CoreNamedLockTest extends TestCase
    */
   public function testEntityId1(): void
   {
-    $lock = new CoreEntityLock();
+    $lock = new CoreEntityLock($this->kernel);
 
     $lock->acquireLock(C::LTN_ID_ENTITY_LOCK1, 1235);
     $id = $lock->getEntityId();
@@ -56,7 +57,7 @@ class CoreNamedLockTest extends TestCase
    */
   public function testEntityId2(): void
   {
-    $lock = new CoreEntityLock();
+    $lock = new CoreEntityLock($this->kernel);
 
     $this->expectException(\LogicException::class);
     $lock->getEntityId();
@@ -77,7 +78,7 @@ class CoreNamedLockTest extends TestCase
     $process = proc_open($cmd, $descriptors, $pipes);
 
     // Acquire lock.
-    $lock = new CoreEntityLock();
+    $lock = new CoreEntityLock($this->kernel);
     $lock->acquireLock(C::LTN_ID_ENTITY_LOCK1, 1234);
 
     // Tell helper process to acquire lock too.
@@ -87,7 +88,7 @@ class CoreNamedLockTest extends TestCase
     sleep(4);
 
     // Release lock.
-    Nub::$nub->DL->commit();
+    $this->kernel->DL->commit();
 
     // Read lock waiting time from child process.
     $time = fgets($pipes[1]);
@@ -110,7 +111,7 @@ class CoreNamedLockTest extends TestCase
     $process = proc_open($cmd, $descriptors, $pipes);
 
     // Acquire lock.
-    $lock = new CoreEntityLock();
+    $lock = new CoreEntityLock($this->kernel);
     $lock->acquireLock(C::LTN_ID_ENTITY_LOCK1, 1234);
 
     // Tell helper process to acquire lock too.
@@ -120,7 +121,7 @@ class CoreNamedLockTest extends TestCase
     sleep(4);
 
     // Release lock.
-    Nub::$nub->DL->rollback();
+    $this->kernel->DL->rollback();
 
     // Read lock waiting time from child process.
     $time = fgets($pipes[1]);
@@ -145,7 +146,7 @@ class CoreNamedLockTest extends TestCase
     $process = proc_open($cmd, $descriptors, $pipes);
 
     // Acquire lock.
-    $lock = new CoreEntityLock();
+    $lock = new CoreEntityLock($this->kernel);
     $lock->acquireLock(C::LTN_ID_ENTITY_LOCK1, 1234);
 
     // Tell helper process to acquire lock too.
@@ -155,7 +156,7 @@ class CoreNamedLockTest extends TestCase
     sleep(4);
 
     // Release lock.
-    Nub::$nub->DL->commit();
+    $this->kernel->DL->commit();
 
     // Read lock waiting time from child process.
     $time = fgets($pipes[1]);
@@ -169,7 +170,7 @@ class CoreNamedLockTest extends TestCase
    */
   public function testGetId1(): void
   {
-    $lock = new CoreEntityLock();
+    $lock = new CoreEntityLock($this->kernel);
 
     $lock->acquireLock(C::LTN_ID_ENTITY_LOCK1, 1235);
     $id = $lock->getNameId();
@@ -183,7 +184,7 @@ class CoreNamedLockTest extends TestCase
    */
   public function testGetId2(): void
   {
-    $lock = new CoreEntityLock();
+    $lock = new CoreEntityLock($this->kernel);
 
     $this->expectException(\LogicException::class);
     $lock->getNameId();
@@ -195,7 +196,7 @@ class CoreNamedLockTest extends TestCase
    */
   public function testGetName1(): void
   {
-    $lock = new CoreEntityLock();
+    $lock = new CoreEntityLock($this->kernel);
 
     $lock->acquireLock(C::LTN_ID_ENTITY_LOCK1, 1238);
     $name = $lock->getName();
@@ -209,7 +210,7 @@ class CoreNamedLockTest extends TestCase
    */
   public function testGetName2(): void
   {
-    $lock = new CoreEntityLock();
+    $lock = new CoreEntityLock($this->kernel);
 
     $this->expectException(\LogicException::class);
     $lock->getName();
@@ -221,10 +222,10 @@ class CoreNamedLockTest extends TestCase
    */
   public function testMultipleLocks(): void
   {
-    $lock1 = new CoreEntityLock();
+    $lock1 = new CoreEntityLock($this->kernel);
     $lock1->acquireLock(C::LTN_ID_ENTITY_LOCK1, 1236);
 
-    $lock2 = new CoreEntityLock();
+    $lock2 = new CoreEntityLock($this->kernel);
     $lock2->acquireLock(C::LTN_ID_ENTITY_LOCK2, 1236);
 
     self::assertTrue(true);
@@ -236,14 +237,14 @@ class CoreNamedLockTest extends TestCase
    */
   public function testVersion(): void
   {
-    $lock1 = new CoreEntityLock();
+    $lock1 = new CoreEntityLock($this->kernel);
     $lock1->acquireLock(C::LTN_ID_ENTITY_LOCK1, 1237);
     $version1 = $lock1->getVersion();
     $lock1->updateVersion();
 
     self::assertIsInt($version1);
 
-    $lock2 = new CoreEntityLock();
+    $lock2 = new CoreEntityLock($this->kernel);
     $lock2->acquireLock(C::LTN_ID_ENTITY_LOCK1, 1237);
     $version2 = $lock2->getVersion();
     self::assertNotEquals($version1, $version2);
@@ -251,7 +252,7 @@ class CoreNamedLockTest extends TestCase
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
-   * Connects to the MySQL server and cleans the BLOB tables.
+   * Creates the kernel.
    */
   protected function setUp(): void
   {
@@ -264,8 +265,8 @@ class CoreNamedLockTest extends TestCase
    */
   protected function tearDown(): void
   {
-    Nub::$nub->DL->commit();
-    Nub::$nub->DL->disconnect();
+    $this->kernel->DL->commit();
+    $this->kernel->DL->disconnect();
   }
 
   //--------------------------------------------------------------------------------------------------------------------

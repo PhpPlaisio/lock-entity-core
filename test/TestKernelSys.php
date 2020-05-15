@@ -6,30 +6,21 @@ namespace Plaisio\Lock\Test;
 use Plaisio\C;
 use Plaisio\CompanyResolver\CompanyResolver;
 use Plaisio\CompanyResolver\UniCompanyResolver;
-use Plaisio\Kernel\Nub;
+use Plaisio\PlaisioKernel;
 use SetBased\Stratum\MySql\MySqlDefaultConnector;
 
 /**
  * Kernel for testing purposes.
  */
-class TestKernelSys extends Nub
+class TestKernelSys extends PlaisioKernel
 {
-  //--------------------------------------------------------------------------------------------------------------------
-  /**
-   * Object constructor.
-   */
-  public function __construct()
-  {
-    parent::__construct();
-  }
-
   //--------------------------------------------------------------------------------------------------------------------
   /**
    * Returns the helper object for deriving the company.
    *
    * @return CompanyResolver
    */
-  public function getCompanyResolver(): CompanyResolver
+  public function getCompany(): CompanyResolver
   {
     return new UniCompanyResolver(C::CMP_ID_SYS);
   }

@@ -18,7 +18,7 @@ $handle = fopen('php://stdin', 'rt');
 $read   = fgets($handle);
 
 // Acquire lock.
-$lock = new CoreEntityLock();
+$lock = new CoreEntityLock($kernel);
 $lock->acquireLock(C::LTN_ID_ENTITY_LOCK1, 1234);
 
 // End time.

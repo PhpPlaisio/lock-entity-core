@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace Plaisio\Lock;
 
-use Plaisio\Kernel\Nub;
+use Plaisio\PlaisioObject;
 
 /**
  * Class for optimistically locking database entities.
  */
-class CoreEntityLock implements EntityLock
+class CoreEntityLock extends PlaisioObject implements EntityLock
 {
   //--------------------------------------------------------------------------------------------------------------------
   /**
@@ -46,9 +46,7 @@ class CoreEntityLock implements EntityLock
    */
   public function acquireLock(int $nameId, int $entityId): void
   {
-    $this->version  = Nub::$nub->DL->abcLockEntityCoreGetVersion(Nub::$nub->companyResolver->getCmpId(),
-                                                                 $nameId,
-                                                                 $entityId);
+    $this->version  = $this->nub->DL->abcLockEntityCoreGetVersion($this->nub->company->cmpId, $nameId, $entityId);
     $this->nameId   = $nameId;
     $this->entityId = $entityId;
   }
@@ -82,7 +80,7 @@ class CoreEntityLock implements EntityLock
   {
     $this->ensureHoldLock();
 
-    return Nub::$nub->DL->abcLockEntityCoreGetName($this->nameId);
+    return $this->nub->DL->abcLockEntityCoreGetName($this->nameId);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
@@ -130,9 +128,7 @@ class CoreEntityLock implements EntityLock
   {
     $this->ensureHoldLock();
 
-    Nub::$nub->DL->abcLockEntityCoreUpdateVersion(Nub::$nub->companyResolver->getCmpId(),
-                                                  $this->nameId,
-                                                  $this->entityId);
+    $this->nub->DL->abcLockEntityCoreUpdateVersion($this->nub->company->cmpId, $this->nameId, $this->entityId);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
