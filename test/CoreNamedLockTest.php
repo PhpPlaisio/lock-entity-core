@@ -22,17 +22,17 @@ class CoreNamedLockTest extends TestCase
   protected $kernel;
 
   //--------------------------------------------------------------------------------------------------------------------
-
   /**
    * Test locking twice (or more) the same entity is possible.
    */
   public function testDoubleLock(): void
   {
     $lock = new CoreEntityLock($this->kernel);
+    $lock->acquireLock(C::LTN_ID_ENTITY_LOCK1, 123);
+    $lock->acquireLock(C::LTN_ID_ENTITY_LOCK1, 123);
 
-    $lock->acquireLock(C::LTN_ID_ENTITY_LOCK1, 123);
-    $lock->acquireLock(C::LTN_ID_ENTITY_LOCK1, 123);
-    $lock->acquireLock(C::LTN_ID_ENTITY_LOCK1, 123);
+    $this->kernel->entityLock->create(C::LTN_ID_ENTITY_LOCK1, 123);
+    $this->kernel->entityLock->create(C::LTN_ID_ENTITY_LOCK1, 123);
 
     self::assertTrue(true);
   }
