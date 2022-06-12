@@ -1,5 +1,5 @@
 /**
- * Selects the name of a entity lock.
+ * Selects the name of an entity lock.
  *
  * @param p_ltn_id The ID of the entity lock.
  *
