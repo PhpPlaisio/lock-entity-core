@@ -1,11 +1,13 @@
 /.idea/
 /.phpunit.result.cache
 /bin/
-/doc/
-/vendor/
 /composer.lock
+/custom.task.properties
+/custom.type.properties
+/doc/
+/test/TestDataLayer.php
+/test/coverage.xml
 /test/etc/columns.txt
 /test/etc/routines.json
-/test/TestDataLayer.php
 /test/report/
-/test/coverage.xml
+/vendor/

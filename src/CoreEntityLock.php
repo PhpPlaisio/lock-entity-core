@@ -16,21 +16,21 @@ class CoreEntityLock extends PlaisioObject implements EntityLock
    *
    * @var int|null
    */
-  private $entityId;
+  private ?int $entityId = null;
 
   /**
    * The ID of the name of the entity lock.
    *
    * @var int|null
    */
-  private $nameId;
+  private ?int $nameId;
 
   /**
    * The current version of the entity.
    *
-   * @var int
+   * @var int|null
    */
-  private $version;
+  private ?int $version = null;
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
@@ -46,9 +46,9 @@ class CoreEntityLock extends PlaisioObject implements EntityLock
    */
   public function acquireLock(int $nameId, int $entityId): void
   {
-    $this->version  = $this->nub->DL->abcLockEntityCoreGetVersion($this->nub->company->cmpId, $nameId, $entityId);
     $this->nameId   = $nameId;
     $this->entityId = $entityId;
+    $this->version  = $this->nub->DL->abcLockEntityCoreGetVersion($this->nub->company->cmpId, $nameId, $entityId);
   }
 
   //--------------------------------------------------------------------------------------------------------------------

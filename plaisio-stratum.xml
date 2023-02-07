@@ -1,4 +1,5 @@
 <stratum>
+    <config>test/etc/stratum.ini</config>
     <includes>
         <include>lib/psql/**/*.psql</include>
     </includes>

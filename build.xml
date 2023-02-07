@@ -1,7 +1,21 @@
 <project name="ABC-Framework: Core Session" default="build" basedir=".">
     <!-- Run composer update and executes various other updates -->
     <target name="update">
-        <exec command="composer update" checkreturn="true" passthru="true"/>
+        <exec executable="composer" checkreturn="true" passthru="true">
+            <arg value="--ansi"/>
+            <arg value="update"/>
+        </exec>
+        <phing phingfile="build.xml" target="kernel" haltonfailure="true"/>
+        <phing phingfile="build.xml" target="outdated" haltonfailure="true"/>
+    </target>
+
+    <!-- Show outdated packages -->
+    <target name="outdated">
+        <exec executable="composer" checkreturn="false" passthru="true">
+            <arg value="--ansi"/>
+            <arg value="outdated"/>
+            <arg value="--direct"/>
+        </exec>
     </target>
 
     <target name="kernel">
@@ -15,20 +29,13 @@
         </exec>
     </target>
 
-    <target name="unit-before">
-        <exec command="cat test/ddl/0010_create_database.sql      | mysql -v -u root"      passthru="true" checkreturn="true"/>
-        <exec command="cat test/ddl/0020_create_user.sql          | mysql -v -u root"      passthru="true" checkreturn="true"/>
-        <exec command="cat test/ddl/0100_create_tables.sql        | mysql -v -u root test" passthru="true" checkreturn="true"/>
-        <exec command="cat lib/ddl/0100_create_tables.sql         | mysql -v -u root test" passthru="true" checkreturn="true"/>
-        <exec command="cat test/ddl/0300_abc_lock_entity_name.sql | mysql -v -u root test" passthru="true" checkreturn="true"/>
-        <exec command="bin/stratum stratum test/etc/stratum.ini"                           passthru="true" checkreturn="true"/>
-    </target>
-
     <!-- Runs all unit tests -->
-    <target name="unit" depends="unit-before">
-        <exec command="bin/phpunit" passthru="true" checkreturn="true"/>
-        <!-- Runs all unit second time with filed lock table -->
-        <exec command="bin/phpunit" passthru="true" checkreturn="true"/>
+    <target name="unit">
+        <exec executable="bash" passthru="true" checkreturn="true">
+        <arg value="-e"/>
+        <arg value="-x"/>
+        <arg value="test/unit-test.sh"/>
+        </exec>
     </target>
 
     <target name="build">

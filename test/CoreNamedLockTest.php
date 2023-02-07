@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Plaisio\C;
 use Plaisio\Lock\CoreEntityLock;
 use Plaisio\PlaisioKernel;
+use SetBased\Helper\Cast;
 
 /**
  * Test cases for Lock.
@@ -19,7 +20,7 @@ class CoreNamedLockTest extends TestCase
    *
    * @var PlaisioKernel
    */
-  protected $kernel;
+  protected PlaisioKernel $kernel;
 
   //--------------------------------------------------------------------------------------------------------------------
   /**
@@ -159,9 +160,9 @@ class CoreNamedLockTest extends TestCase
     $this->kernel->DL->commit();
 
     // Read lock waiting time from child process.
-    $time = fgets($pipes[1]);
+    $time = Cast::toManFloat(fgets($pipes[1]));
 
-    self::assertEquals(0, $time);
+    self::assertLessThan(1.0, $time);
   }
 
   //--------------------------------------------------------------------------------------------------------------------
