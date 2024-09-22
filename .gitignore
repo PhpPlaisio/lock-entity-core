@@ -1,9 +1,7 @@
 /.idea/
-/.phpunit.result.cache
+/.phpunit.cache/
 /bin/
 /composer.lock
-/custom.task.properties
-/custom.type.properties
 /doc/
 /test/TestDataLayer.php
 /test/coverage.xml

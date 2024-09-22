@@ -5,39 +5,38 @@
  * @param p_ltn_id        The ID of the entity lock name.
  * @param p_ltt_entity_id The ID of the entity.
  *
- * @type singleton1
- *
- * @return int
+ * @type singleton1 int
  */
-create procedure abc_lock_entity_core_get_version(in p_cmp_id        @abc_lock_entity.cmp_id%type@,
-                                                  in p_ltn_id        @abc_lock_entity.ltn_id%type@,
-                                                  in p_ltt_entity_id @abc_lock_entity.ltt_entity_id%type@)
-modifies sql data
+create procedure abc_lock_entity_core_get_version
+(
+  in p_cmp_id        smallint(5) unsigned, -- type: ABC_LOCK_ENTITY.cmp_id
+  in p_ltn_id        smallint(5) unsigned, -- type: ABC_LOCK_ENTITY.ltn_id
+  in p_ltt_entity_id bigint(20) unsigned --   type: ABC_LOCK_ENTITY.ltt_entity_id
+)
+  modifies sql data
 begin
-  declare l_ltt_version @abc_lock_entity.ltt_version%type@;
-  
+  declare l_ltt_version bigint(20) unsigned; -- type: ABC_LOCK_ENTITY.ltt_version
+
   select ltt_version
-  into   l_ltt_version
-  from   ABC_LOCK_ENTITY
-  where  cmp_id        = p_cmp_id
-  and    ltn_id        = p_ltn_id
-  and    ltt_entity_id = p_ltt_entity_id
-  for update
-  ;
+  into l_ltt_version
+  from ABC_LOCK_ENTITY
+  where cmp_id = p_cmp_id
+    and ltn_id = p_ltn_id
+    and ltt_entity_id = p_ltt_entity_id for
+  update;
 
   if (l_ltt_version is null) then
     set l_ltt_version = uuid_short();
 
-    insert into ABC_LOCK_ENTITY(cmp_id
-    ,                           ltn_id
-    ,                           ltt_entity_id
-    ,                           ltt_version)
-    values(p_cmp_id
-    ,      p_ltn_id
-    ,      p_ltt_entity_id
-    ,      l_ltt_version)
-    ;
+    insert into ABC_LOCK_ENTITY( cmp_id
+                               , ltn_id
+                               , ltt_entity_id
+                               , ltt_version )
+    values ( p_cmp_id
+           , p_ltn_id
+           , p_ltt_entity_id
+           , l_ltt_version );
   end if;
 
-  select l_ltt_version;
+  select l_ltt_version as ltt_version;
 end

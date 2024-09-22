@@ -3,15 +3,15 @@
  *
  * @param p_ltn_id The ID of the entity lock.
  *
- * @type singleton1
- *
- * @return string
+ * @type singleton1 varchar
  */
-create procedure abc_lock_entity_core_get_name(in p_ltn_id @abc_lock_entity.ltn_id%type@)
-modifies sql data
+create procedure abc_lock_entity_core_get_name
+(
+  in p_ltn_id smallint(5) unsigned -- type: ABC_LOCK_ENTITY.ltn_id
+)
+  modifies sql data
 begin
   select ltn_name
-  from   ABC_LOCK_ENTITY_NAME
-  where  ltn_id = p_ltn_id
-  ;
+  from ABC_LOCK_ENTITY_NAME
+  where ltn_id = p_ltn_id;
 end
